@@ -1,0 +1,125 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Description: estimate for each plot 
+```{r}
+tbbc3_18 <- read.csv("tbbc3_18_agg1.csv", header = TRUE)
+tbbc3_19 <- read.csv("tbbc3_19_agg1.csv", header = TRUE)
+z025_19 <- read.csv("z025_19_agg1.csv", header = TRUE)
+```
+
+# model construction of tbbc3 2018
+```{r}
+tbbc3_18$plot <- as.factor(tbbc3_18$plot)
+tbbc3_18$row_num <- as.factor(tbbc3_18$row_num)
+tbbc3_18$range_num <- as.factor(tbbc3_18$range_num)
+library(lme4)
+fit_tbbc18_1 <- lmer(mean ~ plot + (1|row_num) + (1|range_num), tbbc3_18)
+fit_tbbc18_2 <- lmer(mean ~ plot + (1|block), tbbc3_18)
+fit_tbbc18_3 <- lmer(mean ~ plot + (1|row_num) + (1|range_num) + (1|block), tbbc3_18) # not able to converge
+
+anova(fit_tbbc18_1,fit_tbbc18_2) # use row and range model
+
+```
+
+# model construction of tbbc3 2019 single environment 
+```{r}
+############# tbbc3 in MF-700, 2019 #############
+tbbc3_19_mf <- tbbc3_19[tbbc3_19$field == "MF-700",]
+tbbc3_19_mf$range <- as.factor(tbbc3_19_mf$range)
+tbbc3_19_mf$row <- as.factor(tbbc3_19_mf$row)
+tbbc3_19_mf$block <- as.factor(tbbc3_19_mf$block)
+tbbc3_19_mf$plot <- as.factor(tbbc3_19_mf$plot)
+tbbc3_19_mf$rep <- as.factor(tbbc3_19_mf$rep)
+# 2 reps here
+
+# remove the single plant_id
+tbbc3_19_mf1 <- unique(tbbc3_19_mf[,-c(1,3,7,19)])
+library(lme4)
+fit_tbbc19_mf_1 <- lmer(mean ~ plot + (1|range) + (1|row) + (1|rep:block) + (1|rep), tbbc3_19_mf1)
+fit_tbbc19_mf_2 <- lmer(mean ~ plot + (1|range) + (1|row), tbbc3_19_mf1)
+fit_tbbc19_mf_3 <- lmer(mean ~ plot + (1|rep:block) + (1|rep), tbbc3_19_mf1)
+summary(fit_tbbc19_mf_1) # nothing in block
+summary(fit_tbbc19_mf_2) # nothing in row
+summary(fit_tbbc19_mf_3) # nothing in block
+fit_tbbc19_mf_4 <- lmer(mean ~ plot + (1|range), tbbc3_19_mf1)
+anova(fit_tbbc19_mf_4,fit_tbbc19_mf_2) # only have range would be good enough
+anova(fit_tbbc19_mf_4,fit_tbbc19_mf_3) # model 3 is better overall
+```
+
+
+
+```{r}
+############# tbbc3 in CFAR200, 2019 #############
+tbbc3_19_cf <- tbbc3_19[tbbc3_19$field == "CFAR200",]
+tbbc3_19_cf$range <- as.factor(tbbc3_19_cf$range)
+tbbc3_19_cf$row <- as.factor(tbbc3_19_cf$row)
+tbbc3_19_cf$block <- as.factor(tbbc3_19_cf$block)
+tbbc3_19_cf$plot <- as.factor(tbbc3_19_cf$plot) 
+# only one rep 
+
+# remove the single plant_id
+tbbc3_19_cf1 <- unique(tbbc3_19_cf[,-c(1,3,7,19)])
+library(lme4)
+fit_tbbc19_cf_1 <- lmer(mean ~ plot + (1|range) + (1|row) + (1|block), tbbc3_19_cf1)
+fit_tbbc19_cf_2 <- lmer(mean ~ plot + (1|range) + (1|row), tbbc3_19_cf1)
+fit_tbbc19_cf_3 <- lmer(mean ~ plot + (1|block), tbbc3_19_cf1)
+summary(fit_tbbc19_cf_1) # nothing in block, liitle in row
+summary(fit_tbbc19_cf_2) # nothing in row
+summary(fit_tbbc19_cf_3) # nothing in block
+fit_tbbc19_cf_4 <- lmer(mean ~ plot + (1|range), tbbc3_19_cf1)
+anova(fit_tbbc19_cf_4,fit_tbbc19_cf_2) # only have range would be good enough
+```
+
+
+# model construction of z025 2019 single environment 
+```{r}
+############# tbbc3 in MF-700, 2019 #############
+z025_19_mf <- z025_19[z025_19$field == "MF-700",]
+z025_19_mf$range <- as.factor(z025_19_mf$range)
+z025_19_mf$row <- as.factor(z025_19_mf$row)
+z025_19_mf$block <- as.factor(z025_19_mf$block)
+z025_19_mf$plot <- as.factor(z025_19_mf$plot)
+z025_19_mf$rep <- as.factor(z025_19_mf$rep) # 2 rep, block need to be nested within rep
+
+# remove the single plant_id
+z025_19_mf1 <- unique(z025_19_mf[,-c(1,3,7,19)])
+library(lme4)
+fit_z025_19_mf_1 <- lmer(mean ~ plot + (1|range) + (1|row) + (1|rep:block) + (1|rep), z025_19_mf1)
+fit_z025_19_mf_2 <- lmer(mean ~ plot + (1|range) + (1|row), z025_19_mf1)
+fit_z025_19_mf_3 <- lmer(mean ~ plot + (1|rep:block) + (1|rep), z025_19_mf1)
+summary(fit_z025_19_mf_1) # nothing in row and range
+summary(fit_z025_19_mf_2) # nothing in row and range
+summary(fit_z025_19_mf_3) # block is good, but taking the rep
+fit_z025_19_mf_4 <- lmer(mean ~ plot + (1|range), z025_19_mf1)
+anova(fit_z025_19_mf_4,fit_z025_19_mf_2) # the same
+anova(fit_z025_19_mf_4,fit_z025_19_mf_3) # model 3 is the better one
+```
+
+
+```{r}
+############# z025 in CFAR, 2019 #############
+z025_19_cf <- z025_19[z025_19$field == "CFAR200",]
+z025_19_cf$range <- as.factor(z025_19_cf$range)
+z025_19_cf$row <- as.factor(z025_19_cf$row)
+z025_19_cf$block <- as.factor(z025_19_cf$block)
+z025_19_cf$plot <- as.factor(z025_19_cf$plot) 
+z025_19_cf$rep <- as.factor(z025_19_cf$rep) 
+# only one rep 
+
+# remove the single plant_id
+z025_19_cf1 <- unique(z025_19_cf[,-c(1,3,7,19)])
+library(lme4)
+fit_z02519_cf_1 <- lmer(mean ~ plot + (1|range) + (1|row) + (1|rep) +(1|rep:block), z025_19_cf1) # not able to converge
+fit_z02519_cf_2 <- lmer(mean ~ plot + (1|range) + (1|row), z025_19_cf1)
+fit_z02519_cf_3 <- lmer(mean ~ plot + (1|rep) + (1|rep:block), z025_19_cf1)
+summary(fit_z02519_cf_1) # nothing in block, liitle in row
+summary(fit_z02519_cf_2) # range and row all sig
+summary(fit_z02519_cf_3) # nothing in rep
+anova(fit_z02519_cf_1,fit_z02519_cf_2) # model 1 is better at ** level
+anova(fit_z02519_cf_1,fit_z02519_cf_3) # model 1 is better at . level, use model 3
+```
+
+
