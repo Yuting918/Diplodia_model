@@ -19,10 +19,17 @@ library(lme4)
 fit_tbbc18_1 <- lmer(mean ~ plot + (1|row_num) + (1|range_num), tbbc3_18)
 fit_tbbc18_2 <- lmer(mean ~ plot + (1|block), tbbc3_18)
 fit_tbbc18_3 <- lmer(mean ~ plot + (1|row_num) + (1|range_num) + (1|block), tbbc3_18) # not able to converge
+fit_tbbc18_4 <- lmer(mean ~ plot + (1|range_num) + (1|block), tbbc3_18)
+fit_tbbc18_5 <- lmer(mean ~ plot + (1|range_num), tbbc3_18)
 
-anova(fit_tbbc18_1,fit_tbbc18_2) # use row and range model
+anova(fit_tbbc18_1,fit_tbbc18_2) # shouldn't use row and range model, not encough df
+anova(fit_tbbc18_2, fit_tbbc18_4) # same
+anova(fit_tbbc18_2, fit_tbbc18_5) # 5 is better
+summary(fit_tbbc18_2)
+summary(fit_tbbc18_5)
 
-```
+# i will go use the block 
+``` 
 
 # model construction of tbbc3 2019 single environment 
 ```{r}
@@ -70,7 +77,9 @@ summary(fit_tbbc19_cf_1) # nothing in block, liitle in row
 summary(fit_tbbc19_cf_2) # nothing in row
 summary(fit_tbbc19_cf_3) # nothing in block
 fit_tbbc19_cf_4 <- lmer(mean ~ plot + (1|range), tbbc3_19_cf1)
+summary(fit_tbbc19_cf_4)
 anova(fit_tbbc19_cf_4,fit_tbbc19_cf_2) # only have range would be good enough
+anova(fit_tbbc19_cf_4,fit_tbbc19_cf_3)
 ```
 
 
@@ -122,4 +131,51 @@ anova(fit_z02519_cf_1,fit_z02519_cf_2) # model 1 is better at ** level
 anova(fit_z02519_cf_1,fit_z02519_cf_3) # model 1 is better at . level, use model 3
 ```
 
+
+# build the model for combinend environment analysis
+```{r}
+tbbc3_19_1 <- unique(tbbc3_19[,-c(1,3,7,19)])
+library(lme4)
+fit_tbbc_19_1 <- lmer(mean ~ plot + (1|field/rep/block), tbbc3_19_1)
+fit_tbbc_19_2 <- lmer(mean ~ plot + (1|field) + (1|field:range) + (1|field:row), tbbc3_19_1)
+anova(fit_tbbc_19_1,fit_tbbc_19_2) # no difference, the fit 1 is better
+summary(fit_tbbc_19_1)
+summary(fit_tbbc_19_2)
+
+z025_19_1 <- unique(z025_19[,-c(1,3,7,19)])
+library(lme4)
+fit_z025_19_1 <- lmer(mean ~ plot + (1|field/rep/block), z025_19_1)
+fit_z025_19_2 <- lmer(mean ~ plot + (1|field) + (1|field:range) + (1|field:row), z025_19_1)
+summary(fit_z025_19_1)
+summary(fit_z025_19_2)
+anova(fit_z025_19_1,fit_z025_19_2) # model with block seems to be a better one
+```
+
+
+
+# model determined, get the estimates for mean, incidence_rate, mummified_rate for single environment
+```{r}
+library(lme4)
+# tbbc3 population in 2018
+fit_tbbc18_mean <- lmer(mean ~ plot + (1|block), tbbc3_18)
+fit_tbbc18_mummi <- lmer(mummi_rate ~ plot + (1|block), tbbc3_18)
+fit_tbbc18_inci <- lmer(incidence_rate ~ plot + (1|block), tbbc3_18)
+
+# combined environment analysis
+fit_tbbc_mean <- lmer(mean ~ plot + (1|field/rep/block), tbbc3_19_1)
+fit_tbbc_mummi <- lmer(mummi_rate ~ plot + (1|field/rep/block), tbbc3_19_1)
+fit_tbbc_inci <- lmer(incidence_rate ~ plot + (1|field/rep/block), tbbc3_19_1)
+
+fit_z025_mean <- lmer(mean ~ plot + (1|field/rep/block), z025_19_1)
+fit_z025_mummi <- lmer(mummi_rate ~ plot + (1|field/rep/block), z025_19_1)
+fit_z025_inci<- lmer(incidence_rate ~ plot + (1|field/rep/block), z025_19_1)
+
+# single environment analysis
+# tbbc3 in 2019 cfar need only include range in 
+fit_tbbc19_cf_mean <- lmer(mean ~ plot + (1|range), tbbc3_19_cf1)
+fit_tbbc19_cf_mummi <- lmer(mummi_rate ~ plot + (1|range), tbbc3_19_cf1) # my gut feeling is that mummified rate is not a good indicate here
+fit_tbbc19_cf_inci <- lmer(incidence_rate ~ plot + (1|range), tbbc3_19_cf1)
+
+
+```
 
