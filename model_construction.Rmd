@@ -184,56 +184,25 @@ fit_tbbc19_cf_inci <- lmer(incidence_rate ~ plot + (1|range), tbbc3_19_cf1)
 # if the variation within each plot large or not???  there are a lot of variation within each plot, there is no need to plot, use a map to see the trend
 ```{r}
 # write a loop to calcaulte the range of coverage rating in the plot. 
-z025_19_raw <- read_csv("z025_19_raw.csv") # with raw data information for a population with 2 differnt fields
-tbbc3_19_raw <- read_csv("tbbc3_19_raw.csv") 
+library(readxl)
+z025_19_raw <- read.csv("z025_19_raw.csv") # with raw data information for a population with 2 differnt fields
+tbbc3_19_raw <- read.csv("tbbc3_19_raw.csv") 
 c19_raw <- read.csv("c19_raw.csv") # cfar field with 2 populations in
 m19_raw <- read.csv("m19_raw.csv")
 c19 <- rbind(z025_19_cf1,tbbc3_19_cf1)
 m19 <- rbind(z025_19_mf1,tbbc3_19_mf1)
-
-# plot the cfar 2019 field, only z025 population in
-library(ggplot2)
-z025_19_cf$range <- as.numeric(z025_19_cf$range)
-z025_19_cf$row <- as.numeric(z025_19_cf$row)
-p_z025_c19 <- ggplot(z025_19_cf, aes(x=range, y=row)) + 
-  geom_tile(aes(fill=mean)) +
-  theme_bw() + theme(panel.grid = element_blank()) +
-  scale_fill_gradient(low = "#AFC1CC", high = "darkred") + 
-  scale_x_continuous(breaks = seq(1,6,1)) +
-  scale_y_continuous(breaks = seq(1,72,5)) +
-  ggtitle("Plot mean of Z025 population in 2019 CFAR") +
-  labs(fill = "Plot mean") + 
-  xlab("range number") + 
-  ylab("row number") 
- p_z025_c19 
-
-# plot the mf 2019 field, only z025 population in
-library(ggplot2)
-z025_19_mf$range <- as.numeric(z025_19_mf$range)
-z025_19_mf$row <- as.numeric(z025_19_mf$row)
-p_z025_m19 <- ggplot(z025_19_mf, aes(x=range, y=row)) + 
-  geom_tile(aes(fill=mean)) +
-  theme_bw() + theme(panel.grid = element_blank()) +
-  scale_fill_gradient(low = "#AFC1CC", high = "#525f74") + 
-  scale_x_continuous(breaks = seq(1,9,1)) +
-  scale_y_continuous(breaks = seq(1,76,5)) +
-  ggtitle("Plot mean of Z025 population in 2019 Maxwell") +
-  labs(fill = "Plot mean") + 
-  xlab("range number") + 
-  ylab("row number") 
- p_z025_m19 
  
 # plot the cfar 2019 field, both z025 and tbbc3 populaiton
 library(ggplot2)
-c19$range <- as.numeric(c19$range)
-c19$row <- as.numeric(c19$row)
+c19$range <- as.numeric(as.character(c19$range))
+c19$row <- as.numeric(as.character(c19$row))
 p_c19 <- ggplot(c19, aes(x=range, y=row)) + 
   geom_tile(aes(fill=mean)) +
   theme_bw() + theme(panel.grid = element_blank()) +
-  scale_fill_gradient(low = "#AFC1CC", high = "#525f74") + 
-  scale_x_continuous(breaks = seq(1,9,1)) +
-  scale_y_continuous(breaks = seq(1,76,5)) +
-  ggtitle("Plot mean of 2 populations in 2019 CFAR") +
+  scale_fill_gradient(low = "#F4D27A", high = "#525f74") + 
+  scale_x_continuous(breaks = seq(2,9,1)) +
+  scale_y_continuous(breaks = seq(5,76,5)) +
+  ggtitle("Plot mean of 2 populations in 2019 CFAR-200") +
   labs(fill = "Plot mean") + 
   xlab("range number") + 
   ylab("row number") 
@@ -241,18 +210,22 @@ p_c19 <- ggplot(c19, aes(x=range, y=row)) +
  
 # plot the cfar 2019 field, both z025 and tbbc3 populaiton
 library(ggplot2)
-m19$range <- as.numeric(m19$range)
-m19$row <- as.numeric(m19$row)
+m19$range <- as.numeric(as.character(m19$range))
+m19$row <- as.numeric(as.character(m19$row))
 p_m19 <- ggplot(m19, aes(x=range, y=row)) + 
   geom_tile(aes(fill=mean)) +
   theme_bw() + theme(panel.grid = element_blank()) +
-  scale_fill_gradient(low = "#AFC1CC", high = "#525f74") + 
-  scale_x_continuous(breaks = seq(1,13,1)) +
-  scale_y_continuous(breaks = seq(1,60,5)) +
-  ggtitle("Plot mean of 2 populations in 2019 Maxwell") +
+  scale_fill_gradient(low = "#F4D27A", high = "#525f74") + 
+  scale_x_continuous(breaks = seq(2,13,1)) +
+  scale_y_continuous(breaks = seq(5,60,5)) +
+  ggtitle("Plot mean of 2 populations in 2019 MF-700") +
   labs(fill = "Plot mean") + 
   xlab("range number") + 
   ylab("row number") 
  p_m19 
+```
+
+```{r}
+
 ```
 
