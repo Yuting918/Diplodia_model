@@ -25,8 +25,8 @@ fit_tbbc18_5 <- lmer(mean ~ plot + (1|range_num), tbbc3_18)
 anova(fit_tbbc18_1,fit_tbbc18_2) # shouldn't use row and range model, not encough df
 anova(fit_tbbc18_2, fit_tbbc18_4) # same
 anova(fit_tbbc18_2, fit_tbbc18_5) # 5 is better
-summary(fit_tbbc18_2)
-summary(fit_tbbc18_5)
+#summary(fit_tbbc18_2)
+#summary(fit_tbbc18_5)
 
 # i will go use the block 
 ``` 
@@ -43,14 +43,14 @@ tbbc3_19_mf$rep <- as.factor(tbbc3_19_mf$rep)
 # 2 reps here
 
 # remove the single plant_id
-tbbc3_19_mf1 <- unique(tbbc3_19_mf[,-c(1,3,7,19)])
+tbbc3_19_mf1 <- tbbc3_19_mf[!duplicated(tbbc3_19_mf[,-c(1,3,7,19)]),]
 library(lme4)
 fit_tbbc19_mf_1 <- lmer(mean ~ plot + (1|range) + (1|row) + (1|rep:block) + (1|rep), tbbc3_19_mf1)
 fit_tbbc19_mf_2 <- lmer(mean ~ plot + (1|range) + (1|row), tbbc3_19_mf1)
 fit_tbbc19_mf_3 <- lmer(mean ~ plot + (1|rep:block) + (1|rep), tbbc3_19_mf1)
-summary(fit_tbbc19_mf_1) # nothing in block
-summary(fit_tbbc19_mf_2) # nothing in row
-summary(fit_tbbc19_mf_3) # nothing in block
+#summary(fit_tbbc19_mf_1) # nothing in block
+#summary(fit_tbbc19_mf_2) # nothing in row
+#summary(fit_tbbc19_mf_3) # nothing in block
 fit_tbbc19_mf_4 <- lmer(mean ~ plot + (1|range), tbbc3_19_mf1)
 anova(fit_tbbc19_mf_4,fit_tbbc19_mf_2) # only have range would be good enough
 anova(fit_tbbc19_mf_4,fit_tbbc19_mf_3) # model 3 is better overall
@@ -68,16 +68,17 @@ tbbc3_19_cf$plot <- as.factor(tbbc3_19_cf$plot)
 # only one rep 
 
 # remove the single plant_id
-tbbc3_19_cf1 <- unique(tbbc3_19_cf[,-c(1,3,7,19)])
+
+tbbc3_19_cf1 <- tbbc3_19_cf[!duplicated(tbbc3_19_cf[,-c(1,3,7,19)]),]
 library(lme4)
 fit_tbbc19_cf_1 <- lmer(mean ~ plot + (1|range) + (1|row) + (1|block), tbbc3_19_cf1)
 fit_tbbc19_cf_2 <- lmer(mean ~ plot + (1|range) + (1|row), tbbc3_19_cf1)
 fit_tbbc19_cf_3 <- lmer(mean ~ plot + (1|block), tbbc3_19_cf1)
-summary(fit_tbbc19_cf_1) # nothing in block, liitle in row
-summary(fit_tbbc19_cf_2) # nothing in row
-summary(fit_tbbc19_cf_3) # nothing in block
+# summary(fit_tbbc19_cf_1) # nothing in block, liitle in row
+# summary(fit_tbbc19_cf_2) # nothing in row
+# summary(fit_tbbc19_cf_3) # nothing in block
 fit_tbbc19_cf_4 <- lmer(mean ~ plot + (1|range), tbbc3_19_cf1)
-summary(fit_tbbc19_cf_4)
+# summary(fit_tbbc19_cf_4)
 anova(fit_tbbc19_cf_4,fit_tbbc19_cf_2) # only have range would be good enough
 anova(fit_tbbc19_cf_4,fit_tbbc19_cf_3)
 ```
@@ -94,14 +95,14 @@ z025_19_mf$plot <- as.factor(z025_19_mf$plot)
 z025_19_mf$rep <- as.factor(z025_19_mf$rep) # 2 rep, block need to be nested within rep
 
 # remove the single plant_id
-z025_19_mf1 <- unique(z025_19_mf[,-c(1,3,7,19)])
+z025_19_mf1 <- z025_19_mf[!duplicated(z025_19_mf[,-c(1,3,7,19)]),]
 library(lme4)
 fit_z025_19_mf_1 <- lmer(mean ~ plot + (1|range) + (1|row) + (1|rep:block) + (1|rep), z025_19_mf1)
 fit_z025_19_mf_2 <- lmer(mean ~ plot + (1|range) + (1|row), z025_19_mf1)
 fit_z025_19_mf_3 <- lmer(mean ~ plot + (1|rep:block) + (1|rep), z025_19_mf1)
-summary(fit_z025_19_mf_1) # nothing in row and range
-summary(fit_z025_19_mf_2) # nothing in row and range
-summary(fit_z025_19_mf_3) # block is good, but taking the rep
+#summary(fit_z025_19_mf_1) # nothing in row and range
+#summary(fit_z025_19_mf_2) # nothing in row and range
+#summary(fit_z025_19_mf_3) # block is good, but taking the rep
 fit_z025_19_mf_4 <- lmer(mean ~ plot + (1|range), z025_19_mf1)
 anova(fit_z025_19_mf_4,fit_z025_19_mf_2) # the same
 anova(fit_z025_19_mf_4,fit_z025_19_mf_3) # model 3 is the better one
@@ -119,14 +120,14 @@ z025_19_cf$rep <- as.factor(z025_19_cf$rep)
 # only one rep 
 
 # remove the single plant_id
-z025_19_cf1 <- unique(z025_19_cf[,-c(1,3,7,19)])
+z025_19_cf1 <- z025_19_cf[!duplicated(z025_19_cf[,-c(1,3,7,19)]),]
 library(lme4)
 fit_z02519_cf_1 <- lmer(mean ~ plot + (1|range) + (1|row) + (1|rep) +(1|rep:block), z025_19_cf1) # not able to converge
 fit_z02519_cf_2 <- lmer(mean ~ plot + (1|range) + (1|row), z025_19_cf1)
 fit_z02519_cf_3 <- lmer(mean ~ plot + (1|rep) + (1|rep:block), z025_19_cf1)
-summary(fit_z02519_cf_1) # nothing in block, liitle in row
-summary(fit_z02519_cf_2) # range and row all sig
-summary(fit_z02519_cf_3) # nothing in rep
+#summary(fit_z02519_cf_1) # nothing in block, liitle in row
+#summary(fit_z02519_cf_2) # range and row all sig
+#summary(fit_z02519_cf_3) # nothing in rep
 anova(fit_z02519_cf_1,fit_z02519_cf_2) # model 1 is better at ** level
 anova(fit_z02519_cf_1,fit_z02519_cf_3) # model 1 is better at . level, use model 3
 ```
@@ -139,15 +140,15 @@ library(lme4)
 fit_tbbc_19_1 <- lmer(mean ~ plot + (1|field/rep/block), tbbc3_19_1)
 fit_tbbc_19_2 <- lmer(mean ~ plot + (1|field) + (1|field:range) + (1|field:row), tbbc3_19_1)
 anova(fit_tbbc_19_1,fit_tbbc_19_2) # no difference, the fit 1 is better
-summary(fit_tbbc_19_1)
-summary(fit_tbbc_19_2)
+#summary(fit_tbbc_19_1)
+#summary(fit_tbbc_19_2)
 
-z025_19_1 <- unique(z025_19[,-c(1,3,7,19)])
+z025_19_1 <- z025_19[!duplicated(z025_19[,-c(1,3,7,19)]),]
 library(lme4)
 fit_z025_19_1 <- lmer(mean ~ plot + (1|field/rep/block), z025_19_1)
 fit_z025_19_2 <- lmer(mean ~ plot + (1|field) + (1|field:range) + (1|field:row), z025_19_1)
-summary(fit_z025_19_1)
-summary(fit_z025_19_2)
+#summary(fit_z025_19_1)
+#summary(fit_z025_19_2)
 anova(fit_z025_19_1,fit_z025_19_2) # model with block seems to be a better one
 ```
 
@@ -177,5 +178,81 @@ fit_tbbc19_cf_mummi <- lmer(mummi_rate ~ plot + (1|range), tbbc3_19_cf1) # my gu
 fit_tbbc19_cf_inci <- lmer(incidence_rate ~ plot + (1|range), tbbc3_19_cf1)
 
 
+```
+
+# try to build a plot a field map
+# if the variation within each plot large or not???  there are a lot of variation within each plot, there is no need to plot, use a map to see the trend
+```{r}
+# write a loop to calcaulte the range of coverage rating in the plot. 
+z025_19_raw <- read_csv("z025_19_raw.csv") # with raw data information for a population with 2 differnt fields
+tbbc3_19_raw <- read_csv("tbbc3_19_raw.csv") 
+c19_raw <- read.csv("c19_raw.csv") # cfar field with 2 populations in
+m19_raw <- read.csv("m19_raw.csv")
+c19 <- rbind(z025_19_cf1,tbbc3_19_cf1)
+m19 <- rbind(z025_19_mf1,tbbc3_19_mf1)
+
+# plot the cfar 2019 field, only z025 population in
+library(ggplot2)
+z025_19_cf$range <- as.numeric(z025_19_cf$range)
+z025_19_cf$row <- as.numeric(z025_19_cf$row)
+p_z025_c19 <- ggplot(z025_19_cf, aes(x=range, y=row)) + 
+  geom_tile(aes(fill=mean)) +
+  theme_bw() + theme(panel.grid = element_blank()) +
+  scale_fill_gradient(low = "#AFC1CC", high = "darkred") + 
+  scale_x_continuous(breaks = seq(1,6,1)) +
+  scale_y_continuous(breaks = seq(1,72,5)) +
+  ggtitle("Plot mean of Z025 population in 2019 CFAR") +
+  labs(fill = "Plot mean") + 
+  xlab("range number") + 
+  ylab("row number") 
+ p_z025_c19 
+
+# plot the mf 2019 field, only z025 population in
+library(ggplot2)
+z025_19_mf$range <- as.numeric(z025_19_mf$range)
+z025_19_mf$row <- as.numeric(z025_19_mf$row)
+p_z025_m19 <- ggplot(z025_19_mf, aes(x=range, y=row)) + 
+  geom_tile(aes(fill=mean)) +
+  theme_bw() + theme(panel.grid = element_blank()) +
+  scale_fill_gradient(low = "#AFC1CC", high = "#525f74") + 
+  scale_x_continuous(breaks = seq(1,9,1)) +
+  scale_y_continuous(breaks = seq(1,76,5)) +
+  ggtitle("Plot mean of Z025 population in 2019 Maxwell") +
+  labs(fill = "Plot mean") + 
+  xlab("range number") + 
+  ylab("row number") 
+ p_z025_m19 
+ 
+# plot the cfar 2019 field, both z025 and tbbc3 populaiton
+library(ggplot2)
+c19$range <- as.numeric(c19$range)
+c19$row <- as.numeric(c19$row)
+p_c19 <- ggplot(c19, aes(x=range, y=row)) + 
+  geom_tile(aes(fill=mean)) +
+  theme_bw() + theme(panel.grid = element_blank()) +
+  scale_fill_gradient(low = "#AFC1CC", high = "#525f74") + 
+  scale_x_continuous(breaks = seq(1,9,1)) +
+  scale_y_continuous(breaks = seq(1,76,5)) +
+  ggtitle("Plot mean of 2 populations in 2019 CFAR") +
+  labs(fill = "Plot mean") + 
+  xlab("range number") + 
+  ylab("row number") 
+ p_c19 
+ 
+# plot the cfar 2019 field, both z025 and tbbc3 populaiton
+library(ggplot2)
+m19$range <- as.numeric(m19$range)
+m19$row <- as.numeric(m19$row)
+p_m19 <- ggplot(m19, aes(x=range, y=row)) + 
+  geom_tile(aes(fill=mean)) +
+  theme_bw() + theme(panel.grid = element_blank()) +
+  scale_fill_gradient(low = "#AFC1CC", high = "#525f74") + 
+  scale_x_continuous(breaks = seq(1,13,1)) +
+  scale_y_continuous(breaks = seq(1,60,5)) +
+  ggtitle("Plot mean of 2 populations in 2019 Maxwell") +
+  labs(fill = "Plot mean") + 
+  xlab("range number") + 
+  ylab("row number") 
+ p_m19 
 ```
 
