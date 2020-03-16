@@ -1,0 +1,56 @@
+---
+title: "diplodia estimaion"
+output: html_notebook
+date: "2020-03-15"
+---
+
+# description: firstly get the estimations that across multiple environments
+* 2018 tbbc3, use block only
+* 2019 tbbc3 MF: rep/block
+* 2019 tbbc3 CF: block (only one rep) - or only range in
+*	2019 z025 MF: rep/block
+* 2019 z025 CF: rep/block
+* 2019 tbbc3 CB: (1|field/rep/block)
+* 2019 z025 CB:  (1|field/rep/block)
+
+Description: estimate for each plot 
+```{r}
+tbbc3_18 <- read.csv("/Users/qiuyuting/Documents/data_file/tbbc3_18_agg.csv", header = TRUE)
+tbbc3_19 <- read.csv("/Users/qiuyuting/Documents/data_file/tbbc3_19_agg.csv", header = TRUE)
+z025_19 <- read.csv("/Users/qiuyuting/Documents/data_file/z025_19_agg.csv", header = TRUE)
+```
+
+
+# for 2018 data
+```{r}
+library(lme4)
+fit_tbbc3_18_mean <- lmer(mean ~ plot + (1|block), tbbc3_18)
+fit_tbbc3_18_mean1 <- lmer(mean1 ~ plot + (1|block), tbbc3_18)
+fit_tbbc3_18_inci <- lmer(incidence_rate ~ plot + (1|block), tbbc3_18)
+fit_tbbc3_18_mummi <- lmer(mummi_rate ~ plot + (1|block), tbbc3_18)
+fit_tbbc3_18_mummi1 <- lmer(mummi_rate1 ~ plot + (1|block), tbbc3_18)
+
+est_tbbc3_18_mean <- as.data.frame(fixef(fit_tbbc3_18_mean))
+est_tbbc3_18_mean1 <- as.data.frame(fixef(fit_tbbc3_18_mean1))
+est_tbbc3_18_inci <- as.data.frame(fixef(fit_tbbc3_18_inci))
+est_tbbc3_18_mummi <- as.data.frame(fixef(fit_tbbc3_18_mummi))
+est_tbbc3_18_mummi1 <- as.data.frame(fixef(fit_tbbc3_18_mummi1))
+```
+
+# 2019 combined first tbbc3
+```{r}
+tbbc3_19$Plot.Name <- as.factor(tbbc3_19$Plot.Name)
+tbbc3_19_1<- tbbc3_19[,c(2,4,5,6,8:10,14:18,22:24,26,28)]
+tbbc3_19_2 <- unique(tbbc3_19_1)
+
+fit_tbbc3_19_mean <- lmer(mean ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
+fit_tbbc3_19_mean1 <- lmer(mean1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
+fit_tbbc3_19_inci <- lmer(incidence_rate ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
+fit_tbbc3_19_mummi <- lmer(mummi_rate ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
+fit_tbbc3_19_mummi1 <- lmer(mummi_rate1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
+fit_tbbc3_19_seve <- lmer(severity_mean ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2) # fail to converge
+fit_tbbc3_19_seve1 <- lmer(severity_mean1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
+
+
+```
+

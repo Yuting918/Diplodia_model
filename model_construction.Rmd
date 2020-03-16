@@ -5,9 +5,9 @@ output: html_notebook
 
 Description: estimate for each plot 
 ```{r}
-tbbc3_18 <- read.csv("tbbc3_18_agg1.csv", header = TRUE)
-tbbc3_19 <- read.csv("tbbc3_19_agg1.csv", header = TRUE)
-z025_19 <- read.csv("z025_19_agg1.csv", header = TRUE)
+tbbc3_18 <- read.csv("/Users/qiuyuting/Documents/data_file/tbbc3_18_agg.csv", header = TRUE)
+tbbc3_19 <- read.csv("/Users/qiuyuting/Documents/data_file/tbbc3_19_agg.csv", header = TRUE)
+z025_19 <- read.csv("/Users/qiuyuting/Documents/data_file/z025_19_agg.csv", header = TRUE)
 ```
 
 # model construction of tbbc3 2018
@@ -24,7 +24,7 @@ fit_tbbc18_5 <- lmer(mean ~ plot + (1|range_num), tbbc3_18)
 
 anova(fit_tbbc18_1,fit_tbbc18_2) # shouldn't use row and range model, not encough df
 anova(fit_tbbc18_2, fit_tbbc18_4) # same
-anova(fit_tbbc18_2, fit_tbbc18_5) # 5 is better
+anova(fit_tbbc18_2, fit_tbbc18_5) # 2 is better
 #summary(fit_tbbc18_2)
 #summary(fit_tbbc18_5)
 
@@ -80,7 +80,7 @@ fit_tbbc19_cf_3 <- lmer(mean ~ plot + (1|block), tbbc3_19_cf1)
 fit_tbbc19_cf_4 <- lmer(mean ~ plot + (1|range), tbbc3_19_cf1)
 # summary(fit_tbbc19_cf_4)
 anova(fit_tbbc19_cf_4,fit_tbbc19_cf_2) # only have range would be good enough
-anova(fit_tbbc19_cf_4,fit_tbbc19_cf_3)
+anova(fit_tbbc19_cf_4,fit_tbbc19_cf_3) # no dfiffference, we can use the block design
 ```
 
 
@@ -225,7 +225,8 @@ p_m19 <- ggplot(m19, aes(x=range, y=row)) +
  p_m19 
 ```
 
+# 2020-03-14
+## only include the range within 
 ```{r}
 
 ```
-
