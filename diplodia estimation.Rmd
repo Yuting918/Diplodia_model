@@ -51,6 +51,60 @@ fit_tbbc3_19_mummi1 <- lmer(mummi_rate1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_
 fit_tbbc3_19_seve <- lmer(severity_mean ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2) # fail to converge
 fit_tbbc3_19_seve1 <- lmer(severity_mean1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
 
+est_tbbc3_19_mean <- as.data.frame(fixef(fit_tbbc3_19_mean))
+est_tbbc3_19_mean1 <- as.data.frame(fixef(fit_tbbc3_19_mean1))
+est_tbbc3_19_inci <- as.data.frame(fixef(fit_tbbc3_19_inci))
+est_tbbc3_19_mummi <- as.data.frame(fixef(fit_tbbc3_19_mummi))
+est_tbbc3_19_mummi1 <- as.data.frame(fixef(fit_tbbc3_19_mummi1))
+est_tbbc3_19_seve <- as.data.frame(fixef(fit_tbbc3_19_seve))
+est_tbbc3_19_seve1 <- as.data.frame(fixef(fit_tbbc3_19_seve1))
+```
 
+# 2019 combined for z025 population
+```{r}
+z025_19$Plot.Name <- as.factor(z025_19$Plot.Name)
+z025_19_1<- z025_19[,c(2,4,5,6,8:10,14:18,22:24,26,28)]
+z025_19_2 <- unique(z025_19_1)
+
+fit_z025_19_mean <- lmer(mean ~ Plot.Name + (1|Field/Rep/Block),z025_19_2)
+fit_z025_19_mean1 <- lmer(mean1 ~ Plot.Name + (1|Field/Rep/Block),z025_19_2) # fail to converge
+fit_z025_19_inci <- lmer(incidence_rate ~ Plot.Name + (1|Field/Rep/Block),z025_19_2)
+fit_z025_19_mummi <- lmer(mummi_rate ~ Plot.Name + (1|Field/Rep/Block),z025_19_2) # fail to converge
+fit_z025_19_mummi1 <- lmer(mummi_rate1 ~ Plot.Name + (1|Field/Rep/Block),z025_19_2)  # fail to converge
+fit_z025_19_seve <- lmer(severity_mean ~ Plot.Name + (1|Field/Rep/Block),z025_19_2) 
+fit_z025_19_seve1 <- lmer(severity_mean1 ~ Plot.Name + (1|Field/Rep/Block),z025_19_2)
+
+est_z025_19_mean <- as.data.frame(fixef(fit_z025_19_mean))
+est_z025_19_mean1 <- as.data.frame(fixef(fit_z025_19_mean1))
+est_z025_19_inci <- as.data.frame(fixef(fit_z025_19_inci))
+est_z025_19_mummi <- as.data.frame(fixef(fit_z025_19_mummi))
+est_z025_19_mummi1 <- as.data.frame(fixef(fit_z025_19_mummi1))
+est_z025_19_seve <- as.data.frame(fixef(fit_z025_19_seve))
+est_z025_19_seve1 <- as.data.frame(fixef(fit_z025_19_seve1))
+```
+
+# write out the results 
+```{r}
+write.csv(est_z025_19_mean, "/Users/qiuyuting/Documents/data_file/est_z025_19_mean.csv")
+write.csv(est_z025_19_mean1, "/Users/qiuyuting/Documents/data_file/est_z025_19_mean1.csv")
+write.csv(est_z025_19_inci, "/Users/qiuyuting/Documents/data_file/est_z025_19_inci.csv")
+write.csv(est_z025_19_mummi, "/Users/qiuyuting/Documents/data_file/est_z025_19_mummi.csv")
+write.csv(est_z025_19_mummi1, "/Users/qiuyuting/Documents/data_file/est_z025_19_mummi1.csv")
+write.csv(est_z025_19_seve, "/Users/qiuyuting/Documents/data_file/est_z025_19_seve.csv")
+write.csv(est_z025_19_seve1, "/Users/qiuyuting/Documents/data_file/est_z025_19_seve1.csv")
+
+write.csv(est_tbbc3_19_mean, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_mean.csv")
+write.csv(est_tbbc3_19_mean1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_mean1.csv")
+write.csv(est_tbbc3_19_inci, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_inci.csv")
+write.csv(est_tbbc3_19_mummi, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_mummi.csv")
+write.csv(est_tbbc3_19_mummi1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_mummi1.csv")
+write.csv(est_tbbc3_19_seve, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_seve.csv")
+write.csv(est_tbbc3_19_seve1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_seve1.csv")
+
+write.csv(est_z025_18_mean, "/Users/qiuyuting/Documents/data_file/est_z025_18_mean.csv")
+write.csv(est_z025_18_mean1, "/Users/qiuyuting/Documents/data_file/est_z025_18_mean1.csv")
+write.csv(est_z025_18_inci, "/Users/qiuyuting/Documents/data_file/est_z025_18_inci.csv")
+write.csv(est_z025_18_mummi, "/Users/qiuyuting/Documents/data_file/est_z025_18_mummi.csv")
+write.csv(est_z025_18_mummi1, "/Users/qiuyuting/Documents/data_file/est_z025_18_mummi1.csv")
 ```
 
