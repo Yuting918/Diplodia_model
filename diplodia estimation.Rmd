@@ -25,13 +25,13 @@ z025_19 <- read.csv("/Users/qiuyuting/Documents/data_file/z025_19_agg.csv", head
 ```{r}
 library(lme4)
 fit_tbbc3_18_mean <- lmer(mean ~ plot + (1|block), tbbc3_18)
-fit_tbbc3_18_mean1 <- lmer(mean1 ~ plot + (1|block), tbbc3_18)
+fit_tbbc3_18_new_mean1 <- lmer(new_mean1 ~ plot + (1|block), tbbc3_18)
 fit_tbbc3_18_inci <- lmer(incidence_rate ~ plot + (1|block), tbbc3_18)
 fit_tbbc3_18_mummi <- lmer(mummi_rate ~ plot + (1|block), tbbc3_18)
 fit_tbbc3_18_mummi1 <- lmer(mummi_rate1 ~ plot + (1|block), tbbc3_18)
 
 est_tbbc3_18_mean <- as.data.frame(fixef(fit_tbbc3_18_mean))
-est_tbbc3_18_mean1 <- as.data.frame(fixef(fit_tbbc3_18_mean1))
+est_tbbc3_18_new_mean1 <- as.data.frame(fixef(fit_tbbc3_18_new_mean1))
 est_tbbc3_18_inci <- as.data.frame(fixef(fit_tbbc3_18_inci))
 est_tbbc3_18_mummi <- as.data.frame(fixef(fit_tbbc3_18_mummi))
 est_tbbc3_18_mummi1 <- as.data.frame(fixef(fit_tbbc3_18_mummi1))
@@ -40,11 +40,11 @@ est_tbbc3_18_mummi1 <- as.data.frame(fixef(fit_tbbc3_18_mummi1))
 # 2019 combined first tbbc3
 ```{r}
 tbbc3_19$Plot.Name <- as.factor(tbbc3_19$Plot.Name)
-tbbc3_19_1<- tbbc3_19[,c(2,4,5,6,8:10,14:17,22:24,26,28)]
+tbbc3_19_1<- tbbc3_19[,c(2,4,5,6,8:10,14:17,22:24,26,28,29)]
 tbbc3_19_2 <- unique(tbbc3_19_1)
 
 fit_tbbc3_19_mean <- lmer(mean ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
-fit_tbbc3_19_mean1 <- lmer(mean1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
+fit_tbbc3_19_new_mean1 <- lmer(new_mean1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
 fit_tbbc3_19_inci <- lmer(incidence_rate ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
 fit_tbbc3_19_mummi <- lmer(mummi_rate ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
 fit_tbbc3_19_mummi1 <- lmer(mummi_rate1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
@@ -52,7 +52,7 @@ fit_tbbc3_19_seve <- lmer(severity_mean ~ Plot.Name + (1|Field/Rep/Block),tbbc3_
 fit_tbbc3_19_seve1 <- lmer(severity_mean1 ~ Plot.Name + (1|Field/Rep/Block),tbbc3_19_2)
 
 est_tbbc3_19_mean <- as.data.frame(fixef(fit_tbbc3_19_mean))
-est_tbbc3_19_mean1 <- as.data.frame(fixef(fit_tbbc3_19_mean1))
+est_tbbc3_19_new_mean1 <- as.data.frame(fixef(fit_tbbc3_19_new_mean1))
 est_tbbc3_19_inci <- as.data.frame(fixef(fit_tbbc3_19_inci))
 est_tbbc3_19_mummi <- as.data.frame(fixef(fit_tbbc3_19_mummi))
 est_tbbc3_19_mummi1 <- as.data.frame(fixef(fit_tbbc3_19_mummi1))
@@ -60,14 +60,48 @@ est_tbbc3_19_seve <- as.data.frame(fixef(fit_tbbc3_19_seve))
 est_tbbc3_19_seve1 <- as.data.frame(fixef(fit_tbbc3_19_seve1))
 ```
 
+
+# estimations for 2018 and 2019 TBBC3 population together 
+```{r}
+# read in the file that had combined the 2018 and 2019 data together
+est_tbbc3_1819 <- NULL
+library(readxl)
+tbbc1819 <- read_excel("tbbc1819.xlsx")
+tbbc1819$genotype <- as.factor(tbbc1819$genotype)
+tbbc1819$field <- as.factor(tbbc1819$field)
+tbbc1819$rep <- as.factor(tbbc1819$rep)
+tbbc1819$block <- as.factor(tbbc1819$block)
+tbbc1819$severity_mean <- as.numeric(tbbc1819$severity_mean)
+tbbc1819$severity_mean1 <- as.numeric(tbbc1819$severity_mean1)
+
+library(lme4)
+fit_tbbc1819_mean <- lmer(mean ~ genotype + (1|field/rep/block), tbbc1819)
+fit_tbbc1819_newmean1 <- lmer(new_mean1 ~ genotype + (1|field/rep/block), tbbc1819)
+fit_tbbc1819_inci <- lmer(incidence_rate ~ genotype + (1|field/rep/block), tbbc1819)
+# fit_tbbc1819_mummi <- lmer(mummi_rate ~ genotype + (1|field/rep/block), tbbc1819)
+# fit_tbbc1819_mummi1 <- lmer(mummi_rate1 ~ genotype + (1|field/rep/block), tbbc1819)
+# the two mummified rate modeld has some issue, I am goning to remove them 
+fit_tbbc1819_seve <- lmer(severity_mean ~ genotype + (1|field/rep/block), tbbc1819)
+fit_tbbc1819_seve1 <- lmer(severity_mean1 ~ genotype + (1|field/rep/block), tbbc1819)
+
+est_tbbc3_1819_mean <- as.data.frame(fixef(fit_tbbc1819_mean))
+est_tbbc3_1819_newmean1 <- as.data.frame(fixef(fit_tbbc1819_newmean1))
+est_tbbc3_1819_inci <- as.data.frame(fixef(fit_tbbc1819_inci))
+est_tbbc3_1819_seve <- as.data.frame(fixef(fit_tbbc1819_seve))
+est_tbbc3_1819_seve1 <- as.data.frame(fixef(fit_tbbc1819_seve1))
+```
+
+
+
+
 # 2019 combined for z025 population
 ```{r}
 z025_19$Plot.Name <- as.factor(z025_19$Plot.Name)
-z025_19_1<- z025_19[,c(2,4,5,6,8:10,14:17,22:24,26,28)]
+z025_19_1<- z025_19[,c(2,4,5,6,8:10,14:17,22:24,26,28,29)]
 z025_19_2 <- unique(z025_19_1)
 
 fit_z025_19_mean <- lmer(mean ~ Plot.Name + (1|Field/Rep/Block),z025_19_2)
-fit_z025_19_mean1 <- lmer(mean1 ~ Plot.Name + (1|Field/Rep/Block),z025_19_2) 
+fit_z025_19_new_mean1 <- lmer(new_mean1 ~ Plot.Name + (1|Field/Rep/Block),z025_19_2) 
 fit_z025_19_inci <- lmer(incidence_rate ~ Plot.Name + (1|Field/Rep/Block),z025_19_2)
 fit_z025_19_mummi <- lmer(mummi_rate ~ Plot.Name + (1|Field/Rep/Block),z025_19_2) 
 fit_z025_19_mummi1 <- lmer(mummi_rate1 ~ Plot.Name + (1|Field/Rep/Block),z025_19_2)  
@@ -75,7 +109,7 @@ fit_z025_19_seve <- lmer(severity_mean ~ Plot.Name + (1|Field/Rep/Block),z025_19
 fit_z025_19_seve1 <- lmer(severity_mean1 ~ Plot.Name + (1|Field/Rep/Block),z025_19_2)
 
 est_z025_19_mean <- as.data.frame(fixef(fit_z025_19_mean))
-est_z025_19_mean1 <- as.data.frame(fixef(fit_z025_19_mean1))
+est_z025_19_new_mean1 <- as.data.frame(fixef(fit_z025_19_new_mean1))
 est_z025_19_inci <- as.data.frame(fixef(fit_z025_19_inci))
 est_z025_19_mummi <- as.data.frame(fixef(fit_z025_19_mummi))
 est_z025_19_mummi1 <- as.data.frame(fixef(fit_z025_19_mummi1))
@@ -83,28 +117,93 @@ est_z025_19_seve <- as.data.frame(fixef(fit_z025_19_seve))
 est_z025_19_seve1 <- as.data.frame(fixef(fit_z025_19_seve1))
 ```
 
-# write out the results 
+# combined the results into one table
 ```{r}
-write.csv(est_z025_19_mean, "/Users/qiuyuting/Documents/data_file/est_z025_19_mean.csv")
-write.csv(est_z025_19_mean1, "/Users/qiuyuting/Documents/data_file/est_z025_19_mean1.csv")
-write.csv(est_z025_19_inci, "/Users/qiuyuting/Documents/data_file/est_z025_19_inci.csv")
-write.csv(est_z025_19_mummi, "/Users/qiuyuting/Documents/data_file/est_z025_19_mummi.csv")
-write.csv(est_z025_19_mummi1, "/Users/qiuyuting/Documents/data_file/est_z025_19_mummi1.csv")
-write.csv(est_z025_19_seve, "/Users/qiuyuting/Documents/data_file/est_z025_19_seve.csv")
-write.csv(est_z025_19_seve1, "/Users/qiuyuting/Documents/data_file/est_z025_19_seve1.csv")
+est_tbbc3_18 <- cbind(est_tbbc3_18_inci,est_tbbc3_18_mean)
+est_tbbc3_18 <- cbind(est_tbbc3_18,est_tbbc3_18_mummi)
+est_tbbc3_18 <- cbind(est_tbbc3_18,est_tbbc3_18_mummi1)
+est_tbbc3_18 <- cbind(est_tbbc3_18,est_tbbc3_18_new_mean1)
 
-write.csv(est_tbbc3_19_mean, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_mean.csv")
-write.csv(est_tbbc3_19_mean1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_mean1.csv")
-write.csv(est_tbbc3_19_inci, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_inci.csv")
-write.csv(est_tbbc3_19_mummi, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_mummi.csv")
-write.csv(est_tbbc3_19_mummi1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_mummi1.csv")
-write.csv(est_tbbc3_19_seve, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_seve.csv")
-write.csv(est_tbbc3_19_seve1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19_seve1.csv")
+est_tbbc3_19 <- cbind(est_tbbc3_19_inci, est_tbbc3_19_mean)
+est_tbbc3_19 <- cbind(est_tbbc3_19, est_tbbc3_19_mummi)
+est_tbbc3_19 <- cbind(est_tbbc3_19, est_tbbc3_19_mummi1)
+est_tbbc3_19 <- cbind(est_tbbc3_19, est_tbbc3_19_new_mean1)
+est_tbbc3_19 <- cbind(est_tbbc3_19, est_tbbc3_19_seve)
+est_tbbc3_19 <- cbind(est_tbbc3_19,est_tbbc3_19_seve1)
 
-write.csv(est_tbbc3_18_mean, "/Users/qiuyuting/Documents/data_file/est_tbbc3_18_mean.csv")
-write.csv(est_tbbc3_18_mean1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_18_mean1.csv")
-write.csv(est_tbbc3_18_inci, "/Users/qiuyuting/Documents/data_file/est_tbbc3_18_inci.csv")
-write.csv(est_tbbc3_18_mummi, "/Users/qiuyuting/Documents/data_file/est_tbbc3_18_mummi.csv")
-write.csv(est_tbbc3_18_mummi1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_18_mummi1.csv")
+est_z025_19 <- cbind(est_z025_19_inci, est_z025_19_mean)
+est_z025_19 <- cbind(est_z025_19, est_z025_19_mummi)
+est_z025_19 <- cbind(est_z025_19, est_z025_19_mummi1)
+est_z025_19 <- cbind(est_z025_19, est_z025_19_new_mean1)
+est_z025_19 <- cbind(est_z025_19, est_z025_19_seve)
+est_z025_19 <- cbind(est_z025_19,est_z025_19_seve1)
+
+est_tbbc3_1819 <- cbind(est_tbbc3_1819_mean, est_tbbc3_1819_newmean1)
+est_tbbc3_1819 <- cbind(est_tbbc3_1819, est_tbbc3_1819_inci)
+est_tbbc3_1819$genotype <- rownames(est_tbbc3_1819)
+est_tbbc3_1819_seve$genotype <- rownames(est_tbbc3_1819_seve)
+est_tbbc3_1819_seve1$genotype <- rownames(est_tbbc3_1819_seve1)
+est_tbbc3_1819 <- merge(x=est_tbbc3_1819, y=est_tbbc3_1819_seve, by.x="genotype", by.y="genotype",all=T)
+est_tbbc3_1819 <- merge(x=est_tbbc3_1819, y=est_tbbc3_1819_seve1, by.x="genotype", by.y="genotype",all=T)
 ```
 
+
+# add up the intercept
+```{r}
+est_tbbc3_18_1 <- est_tbbc3_18
+
+for (j in 1:ncol(est_tbbc3_18_1)) {
+  for (i in 2:nrow(est_tbbc3_18_1)) {
+    est_tbbc3_18_1[i,j] = est_tbbc3_18[i,j] + est_tbbc3_18[1,j]
+  }
+}
+
+
+est_tbbc3_19_1 <- est_tbbc3_19
+
+for (j in 1:ncol(est_tbbc3_19_1)) {
+  for (i in 2:nrow(est_tbbc3_19_1)) {
+    est_tbbc3_19_1[i,j] = est_tbbc3_19[i,j] + est_tbbc3_19[1,j]
+  }
+}
+
+
+est_z025_19_1 <- est_z025_19
+
+for (j in 1:ncol(est_z025_19_1)) {
+  for (i in 2:nrow(est_z025_19_1)) {
+    est_z025_19_1[i,j] = est_z025_19[i,j] + est_z025_19[1,j]
+  }
+}
+
+est_tbbc3_1819_1 <- est_tbbc3_1819
+
+for (j in 2:ncol(est_tbbc3_1819_2)){
+  for (i in 2:nrow(est_tbbc3_1819_2)){
+    est_tbbc3_1819_1[i,j] = est_tbbc3_1819[i,j] + est_tbbc3_1819[1,j]
+  }
+}
+```
+
+# set row and column names
+```{r}
+row.names(est_tbbc3_18_1)[1] <- "plotB73"
+colnames(est_tbbc3_18_1) <- c("inci_rate", "mean", "mummi_rate","mummi_rate1", "new_mean1")
+
+row.names(est_tbbc3_19_1)[1] <- "plotB73"
+colnames(est_tbbc3_19_1) <- c("inci_rate", "mean","mummi_rate","mummi_rate1","new_mean1","severity","severity_1")
+
+row.names(est_z025_19_1)[1] <- "plotB73"
+colnames(est_z025_19_1) <- c("inci_rate", "mean","mummi_rate","mummi_rate1","new_mean1","severity","severity_1")
+
+est_tbbc3_1819_1[1,1] <- "genotypeB73"
+colnames(est_tbbc3_1819_1) <- c("genotype","mean", "newmean1","inci_rate","severity","severity1")
+```
+
+# write out the results 
+```{r}
+write.csv(est_tbbc3_18_1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_18.csv")
+write.csv(est_tbbc3_19_1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19.csv")
+write.csv(est_z025_19_1, "/Users/qiuyuting/Documents/data_file/est_z025_19.csv")
+write.csv(est_tbbc3_1819_1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_1819.csv")
+```
