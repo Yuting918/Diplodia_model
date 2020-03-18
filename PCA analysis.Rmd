@@ -1,0 +1,172 @@
+---
+title: "PCA analysis"
+output: html_notebook
+date: "2020_03_17"
+Author: "Yuting Qiu"
+---
+
+# read in data file
+```{r}
+est_tbbc3_18 <- read.csv("/Users/qiuyuting/Documents/data_file/est_tbbc3_18.csv", header = TRUE)
+est_tbbc3_19 <- read.csv("/Users/qiuyuting/Documents/data_file/est_tbbc3_19.csv", header = TRUE)
+est_z025_19 <- read.csv("/Users/qiuyuting/Documents/data_file/est_z025_19.csv", header = TRUE)
+```
+
+# show the correlation table
+```{r}
+library(corrplot)
+colnames(est_tbbc3_18)[1] <- "genotype"
+round(cor(est_tbbc3_18[,-1]),2)
+
+colnames(est_tbbc3_19)[1] <- "genotype"
+round(cor(est_tbbc3_19[,-1]),2)
+
+colnames(est_z025_19)[1] <- "genotype"
+round(cor(est_z025_19[,-1]),2)
+
+pairs(est_tbbc3_18[,-1])
+pairs(est_tbbc3_19[,-1])
+pairs(est_z025_19[,-1])
+```
+
+# look at the distribution by using the boxplot
+```{r}
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+
+# for 2018 tbbc3 population 
+# to create one boxplot with multiple columns, the datafrome need to reshaped into a long format
+est_tbbc3_18.1 <- melt(est_tbbc3_18, id="genotype")
+ggplot(est_tbbc3_18.1, aes(x=variable,y=value, fill=variable)) +
+   geom_boxplot(alpha=0.3) +
+  theme(legend.position="none") +
+    scale_fill_brewer(palette="Dark2") + 
+  labs(title = "Distribution of tbbc3 popualation variables in 2018")
+  
+est_tbbc3_19.1 <- melt(est_tbbc3_19, id="genotype")
+ggplot(est_tbbc3_19.1, aes(x=variable,y=value, fill=variable)) +
+   geom_boxplot(alpha=0.3) +
+  theme(legend.position="none") +
+    scale_fill_brewer(palette="Dark2") + 
+  labs(title = "Distribution of tbbc3 popualation variables in 2019")
+
+est_z025_19.1 <- melt(est_z025_19, id="genotype")
+ggplot(est_z025_19.1, aes(x=variable,y=value, fill=variable)) +
+   geom_boxplot(alpha=0.3) +
+  theme(legend.position="none") +
+    scale_fill_brewer(palette="Dark2") + 
+  labs(title = "Distribution of z025 popualation variables in 2018")
+```
+There is high correlation in the variables in this dataset, the data is highly correlated, we should use PCA. And we should use correlation matrix, because the scale of different variable is very different and it make things hard to compare. So we should standard the data and use the correlation matrix to compare the differnt variables. 
+
+
+
+# PCA analysis for tbbc3 population in 2018
+```{r}
+PCA_tbbc3_18 = princomp(est_tbbc3_18[,-1], cor = T, scores = T) #cor equals T means use the correlation matrix
+summary(PCA_tbbc3_18)
+```
+
+
+```{r}
+PCA_tbbc3_18$sdev ^2 # it seems that only one component would be enough
+loadings(PCA_tbbc3_18)
+```
+
+```{r}
+scree_tbbc3_18 = plot(PCA_tbbc3_18)
+# scree plot show that only one PC would be enough to explain most of the variance in the dataset
+```
+
+
+```{r}
+biplot_tbbc3_18 = biplot(PCA_tbbc3_18)
+plot(PCA_tbbc3_18$scores)
+# in the PC1, all the variables afe pointed to the same direction, in the PC2, however, mean and incidence rate is at the same direction, mummirate and new_mean1 is at the same direction. 
+```
+
+
+# PCA analysis for tbbc3 population in 2019
+```{r}
+PCA_tbbc3_19 <- princomp(est_tbbc3_19[,-1],cor = T, scores = T) #cor equals T means use the correlation matrix
+summary(PCA_tbbc3_19)
+# seems to need use 2 to 3 PC
+```
+
+```{r}
+PCA_tbbc3_19$sdev ^2 # 3 pc needed here
+loadings(PCA_tbbc3_19)
+# do we need mummi rate?? it is some variable show every low correlarion 
+```
+
+```{r}
+scree_tbbc3_19 = plot(PCA_tbbc3_19)
+# 3 PC needed
+```
+
+
+```{r}
+biplot(PCA_tbbc3_19)
+# mummified rate show some really different things, do we really need them?
+# why is this year's mummified rate so differnet
+```
+
+# PCA for tbbc3 2019, without mummified
+```{r}
+PCA_tbbc3_19.1 <- princomp(est_tbbc3_19[,-c(1,4,5)],or = T, scores = T) #cor equals T means use the correlation matrix
+summary(PCA_tbbc3_19.1)
+# based on this, then only one PC would be enough 
+# based on our judgement if the mumified valuable or not
+```
+
+```{r}
+PCA_tbbc3_19.1$sdev ^2
+loadings(PCA_tbbc3_19.1) # 1 PC would be enough
+```
+
+```{r}
+plot(PCA_tbbc3_19.1)
+# again, one PC would be enough
+```
+
+```{r}
+biplot(PCA_tbbc3_19.1)
+```
+
+
+# PCA for 2019 z025 population 
+```{r}
+PCA_z025_19 <- princomp(est_z025_19[,-1], scores = T, cor = T)
+summary(PCA_z025_19) # 3 PC needed as previous
+```
+
+
+```{r}
+PCA_z025_19$sdev ^2 
+loadings(PCA_z025_19)
+# it seems that mummified show opposite direction like mean
+```
+
+```{r}
+biplot(PCA_z025_19)
+# again, mummified rate show oppotite direction to other variables in the PC2
+```
+
+
+# PCA for z025 population 2019 dataset without mummified 
+```{r}
+PCA_z025_19.1 <- princomp(est_z025_19[,-c(1,4,5)])
+summary(PCA_z025_19.1) 
+# only 1 PC would be enough
+```
+
+```{r}
+PCA_z025_19.1$sdev ^2
+loadings(PCA_z025_19.1) # 1 PC is enough 
+```
+
+```{r}
+biplot(PCA_z025_19.1)
+```
+
