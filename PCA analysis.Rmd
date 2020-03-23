@@ -1,6 +1,5 @@
 ---
 title: "PCA analysis"
-<<<<<<< HEAD
 date: "2020_03_17"
 output:
   html_document:
@@ -8,11 +7,7 @@ output:
   html_notebook: default
   pdf_document: default
 Author: Yuting Qiu
-=======
-output: html_notebook
-date: "2020_03_17"
-Author: "Yuting Qiu"
->>>>>>> 6f5572c6dd12341f3c3ce5fc0170ac82687ffd65
+
 ---
 
 # read in data file
@@ -180,11 +175,9 @@ loadings(PCA_z025_19.1) # 1 PC is enough
 biplot(PCA_z025_19.1)
 ```
 
-<<<<<<< HEAD
 ```{r}
 plot(PCA_z025_19)
 plot(PCA_z025_19.1)
 ```
 
-=======
->>>>>>> 6f5572c6dd12341f3c3ce5fc0170ac82687ffd65
+
