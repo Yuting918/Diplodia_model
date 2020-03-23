@@ -15,6 +15,8 @@ Author: Yuting Qiu
 est_tbbc3_18 <- read.csv("/Users/qiuyuting/Documents/data_file/est_tbbc3_18.csv", header = TRUE)
 est_tbbc3_19 <- read.csv("/Users/qiuyuting/Documents/data_file/est_tbbc3_19.csv", header = TRUE)
 est_z025_19 <- read.csv("/Users/qiuyuting/Documents/data_file/est_z025_19.csv", header = TRUE)
+est_tbbc3_1819 <- read.csv("/Users/qiuyuting/Documents/data_file/est_tbbc3_1819.csv", header = TRUE)
+est_tbbc3_1819 <- est_tbbc3_1819[,-1]
 ```
 
 # show the correlation table
@@ -29,9 +31,13 @@ round(cor(est_tbbc3_19[,-1]),2)
 colnames(est_z025_19)[1] <- "genotype"
 round(cor(est_z025_19[,-1]),2)
 
+colnames(est_tbbc3_1819)[1] <- "genotype"
+round(cor(na.omit(est_tbbc3_1819[,-1])),2)
+
 pairs(est_tbbc3_18[,-1])
 pairs(est_tbbc3_19[,-1])
 pairs(est_z025_19[,-1])
+pairs(est_tbbc3_1819[,-1])
 ```
 
 # look at the distribution by using the boxplot
@@ -180,4 +186,45 @@ plot(PCA_z025_19)
 plot(PCA_z025_19.1)
 ```
 
+
+##### try only use the raw data for PCA without mummi###
+```{r}
+PCA_tbbc3_1819 <- princomp(na.omit(est_tbbc3_1819[,-1]),cor = T, scores = T)
+summary(PCA_tbbc3_1819) # need two pc
+```
+
+```{r}
+PCA_tbbc3_1819$sdev ^ 2
+loadings(PCA_tbbc3_1819)
+```
+
+#################################
+# use raw mean for PCA analysis
+# don't use mummifeid
+# combine 18 and 19 together
+```{r}
+PCA_tbbc3_1819.1 <- princomp(na.omit(est_tbbc3_1819[,-c(1,3,6)]),cor = T, scores = T)
+summary(PCA_tbbc3_1819.1) # still need two PC
+```
+
+```{r}
+loadings(PCA_tbbc3_1819.1)
+# we need 2 PC here if we combined 2018 and 2019 together, especially for the severity.
+# However, if we only look at the 2019 dataset, we only need to use one PC why
+# it can be that 2018 data influence the estimation for mean and other info in the data set
+```
+
+
+# take 2019 data as an example to check the normality of the PC scores
+# PCA_z025_19.1 | PCA_tbbc3_19.1
+```{r}
+PCA_z025_19.1_score <- PCA_z025_19.1$scores[,1]
+boxplot(PCA_z025_19.1_score)
+shapiro.test(PCA_z025_19.1_score)
+# P < 0.05 we cannot assume normality based on the shapiro-wilk test, but overall, this one is okay
+library(ggpubr)
+ggqqplot(PCA_z025_19.1_score)
+# based on this, we can assume normality
+
+```
 

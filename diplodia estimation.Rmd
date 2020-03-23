@@ -137,7 +137,7 @@ est_z025_19 <- cbind(est_z025_19, est_z025_19_mummi1)
 est_z025_19 <- cbind(est_z025_19, est_z025_19_new_mean1)
 est_z025_19 <- cbind(est_z025_19, est_z025_19_seve)
 est_z025_19 <- cbind(est_z025_19,est_z025_19_seve1)
-<<<<<<< HEAD
+
 
 est_tbbc3_1819 <- cbind(est_tbbc3_1819_mean, est_tbbc3_1819_newmean1)
 est_tbbc3_1819 <- cbind(est_tbbc3_1819, est_tbbc3_1819_inci)
@@ -146,8 +146,7 @@ est_tbbc3_1819_seve$genotype <- rownames(est_tbbc3_1819_seve)
 est_tbbc3_1819_seve1$genotype <- rownames(est_tbbc3_1819_seve1)
 est_tbbc3_1819 <- merge(x=est_tbbc3_1819, y=est_tbbc3_1819_seve, by.x="genotype", by.y="genotype",all=T)
 est_tbbc3_1819 <- merge(x=est_tbbc3_1819, y=est_tbbc3_1819_seve1, by.x="genotype", by.y="genotype",all=T)
-=======
->>>>>>> 6f5572c6dd12341f3c3ce5fc0170ac82687ffd65
+
 ```
 
 
@@ -187,54 +186,9 @@ for (j in 2:ncol(est_tbbc3_1819_2)){
     est_tbbc3_1819_1[i,j] = est_tbbc3_1819[i,j] + est_tbbc3_1819[1,j]
   }
 }
-=======
-```{r}
-est_tbbc3_18_1 <- est_tbbc3_18
-
-for (j in 1:ncol(est_tbbc3_18_1)) {
-  for (i in 2:nrow(est_tbbc3_18_1)) {
-    est_tbbc3_18_1[i,j] = est_tbbc3_18[i,j] + est_tbbc3_18[1,j]
-  }
-}
-
-
-est_tbbc3_19_1 <- est_tbbc3_19
-
-for (j in 1:ncol(est_tbbc3_19_1)) {
-  for (i in 2:nrow(est_tbbc3_19_1)) {
-    est_tbbc3_19_1[i,j] = est_tbbc3_19[i,j] + est_tbbc3_19[1,j]
-  }
-}
-
-
-est_z025_19_1 <- est_z025_19
-
-for (j in 1:ncol(est_z025_19_1)) {
-  for (i in 2:nrow(est_z025_19_1)) {
-    est_z025_19_1[i,j] = est_z025_19[i,j] + est_z025_19[1,j]
-  }
-}
 ```
 
-# set row and column names
-```{r}
-row.names(est_tbbc3_18_1)[1] <- "plotB73"
-colnames(est_tbbc3_18_1) <- c("inci_rate", "mean", "mummi_rate","mummi_rate1", "new_mean1")
 
-row.names(est_tbbc3_19_1)[1] <- "plotB73"
-colnames(est_tbbc3_19_1) <- c("inci_rate", "mean","mummi_rate","mummi_rate1","new_mean1","severity","severity_1")
-
-row.names(est_z025_19_1)[1] <- "plotB73"
-colnames(est_z025_19_1) <- c("inci_rate", "mean","mummi_rate","mummi_rate1","new_mean1","severity","severity_1")
-```
-
-# write out the results 
-```{r}
-write.csv(est_tbbc3_18_1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_18.csv")
-write.csv(est_tbbc3_19_1, "/Users/qiuyuting/Documents/data_file/est_tbbc3_19.csv")
-write.csv(est_z025_19_1, "/Users/qiuyuting/Documents/data_file/est_z025_19.csv")
->>>>>>> 6f5572c6dd12341f3c3ce5fc0170ac82687ffd65
-```
 
 # set row and column names
 ```{r}
