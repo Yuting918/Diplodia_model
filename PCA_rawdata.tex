@@ -1,0 +1,770 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={R Notebook},
+            pdfauthor={Yuting Qiu},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{R Notebook}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Yuting Qiu}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{2020\_03\_23}
+
+
+\begin{document}
+\maketitle
+
+Description: here we only use the raw mean for analysis, because it has
+a higher heritibility rate I am thinking about doing TBBC3 2018 and 2019
+sepetately. And also combined.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# remove all the variables}
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# read in dataset}
+\NormalTok{est_tbbc3_}\DecValTok{18}\NormalTok{ <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"/Users/qiuyuting/Documents/data_file/est_tbbc3_18.csv"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{est_tbbc3_}\DecValTok{19}\NormalTok{ <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"/Users/qiuyuting/Documents/data_file/est_tbbc3_19.csv"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{est_z025_}\DecValTok{19}\NormalTok{ <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"/Users/qiuyuting/Documents/data_file/est_z025_19.csv"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{est_tbbc3_}\DecValTok{1819}\NormalTok{ <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"/Users/qiuyuting/Documents/data_file/est_tbbc3_1819.csv"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{est_tbbc3_}\DecValTok{1819}\NormalTok{ <-}\StringTok{ }\NormalTok{est_tbbc3_}\DecValTok{1819}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{show-the-correlation-table}{%
+\section{show the correlation table}\label{show-the-correlation-table}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(corrplot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## corrplot 0.84 loaded
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(est_tbbc3_}\DecValTok{18}\NormalTok{)[}\DecValTok{1}\NormalTok{] <-}\StringTok{ "genotype"}
+\KeywordTok{round}\NormalTok{(}\KeywordTok{cor}\NormalTok{(est_tbbc3_}\DecValTok{18}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{]),}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             inci_rate mean mummi_rate mummi_rate1 new_mean1
+## inci_rate        1.00 0.87       0.70        0.59      0.61
+## mean             0.87 1.00       0.90        0.82      0.88
+## mummi_rate       0.70 0.90       1.00        0.96      0.82
+## mummi_rate1      0.59 0.82       0.96        1.00      0.83
+## new_mean1        0.61 0.88       0.82        0.83      1.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(est_tbbc3_}\DecValTok{19}\NormalTok{)[}\DecValTok{1}\NormalTok{] <-}\StringTok{ "genotype"}
+\KeywordTok{round}\NormalTok{(}\KeywordTok{cor}\NormalTok{(est_tbbc3_}\DecValTok{19}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{]),}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             inci_rate  mean mummi_rate mummi_rate1 new_mean1 severity
+## inci_rate        1.00  0.86      -0.07       -0.21      0.53     0.01
+## mean             0.86  1.00       0.00       -0.14      0.84     0.26
+## mummi_rate      -0.07  0.00       1.00        0.88     -0.01     0.09
+## mummi_rate1     -0.21 -0.14       0.88        1.00     -0.08     0.04
+## new_mean1        0.53  0.84      -0.01       -0.08      1.00     0.29
+## severity         0.01  0.26       0.09        0.04      0.29     1.00
+## severity_1       0.18  0.37      -0.04       -0.11      0.39     0.89
+##             severity_1
+## inci_rate         0.18
+## mean              0.37
+## mummi_rate       -0.04
+## mummi_rate1      -0.11
+## new_mean1         0.39
+## severity          0.89
+## severity_1        1.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(est_z025_}\DecValTok{19}\NormalTok{)[}\DecValTok{1}\NormalTok{] <-}\StringTok{ "genotype"}
+\KeywordTok{round}\NormalTok{(}\KeywordTok{cor}\NormalTok{(est_z025_}\DecValTok{19}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{]),}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             inci_rate mean mummi_rate mummi_rate1 new_mean1 severity
+## inci_rate        1.00 0.91       0.31        0.21      0.69     0.29
+## mean             0.91 1.00       0.38        0.29      0.87     0.50
+## mummi_rate       0.31 0.38       1.00        0.96      0.33     0.31
+## mummi_rate1      0.21 0.29       0.96        1.00      0.30     0.31
+## new_mean1        0.69 0.87       0.33        0.30      1.00     0.48
+## severity         0.29 0.50       0.31        0.31      0.48     1.00
+## severity_1       0.44 0.60       0.34        0.34      0.61     0.91
+##             severity_1
+## inci_rate         0.44
+## mean              0.60
+## mummi_rate        0.34
+## mummi_rate1       0.34
+## new_mean1         0.61
+## severity          0.91
+## severity_1        1.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(est_tbbc3_}\DecValTok{1819}\NormalTok{)[}\DecValTok{1}\NormalTok{] <-}\StringTok{ "genotype"}
+\KeywordTok{round}\NormalTok{(}\KeywordTok{cor}\NormalTok{(}\KeywordTok{na.omit}\NormalTok{(est_tbbc3_}\DecValTok{1819}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{])),}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           mean newmean1 inci_rate severity severity1
+## mean      1.00     0.85      0.86     0.27      0.40
+## newmean1  0.85     1.00      0.56     0.30      0.41
+## inci_rate 0.86     0.56      1.00     0.02      0.23
+## severity  0.27     0.30      0.02     1.00      0.90
+## severity1 0.40     0.41      0.23     0.90      1.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pairs}\NormalTok{(est_tbbc3_}\DecValTok{18}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pairs}\NormalTok{(est_tbbc3_}\DecValTok{19}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-3-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pairs}\NormalTok{(est_z025_}\DecValTok{19}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-3-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pairs}\NormalTok{(est_tbbc3_}\DecValTok{1819}\NormalTok{[,}\OperatorTok{-}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-3-4.pdf}
+
+\hypertarget{tbbc3-population-pca-analysis}{%
+\section{2018 TBBC3 population PCA
+analysis}\label{tbbc3-population-pca-analysis}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# 2018 all info in, without new variables}
+\NormalTok{PCA_tbbc3_}\DecValTok{18}\NormalTok{ <-}\StringTok{ }\KeywordTok{princomp}\NormalTok{(est_tbbc3_}\DecValTok{18}\NormalTok{[,}\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{)], }\DataTypeTok{cor =}\NormalTok{ T, }\DataTypeTok{scores =}\NormalTok{ T) }\CommentTok{#cor equals T means use the correlation matrix}
+\KeywordTok{summary}\NormalTok{(PCA_tbbc3_}\DecValTok{18}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Importance of components:
+##                           Comp.1    Comp.2    Comp.3
+## Standard deviation     1.6273363 0.5479225 0.2270626
+## Proportion of Variance 0.8827412 0.1000730 0.0171858
+## Cumulative Proportion  0.8827412 0.9828142 1.0000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# One PC would be enough}
+
+\KeywordTok{loadings}\NormalTok{(PCA_tbbc3_}\DecValTok{18}\NormalTok{) }\CommentTok{# positively correlated}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Loadings:
+##            Comp.1 Comp.2 Comp.3
+## inci_rate   0.559  0.741  0.372
+## mean        0.604        -0.795
+## mummi_rate  0.568 -0.669  0.479
+## 
+##                Comp.1 Comp.2 Comp.3
+## SS loadings     1.000  1.000  1.000
+## Proportion Var  0.333  0.333  0.333
+## Cumulative Var  0.333  0.667  1.000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{biplot}\NormalTok{(PCA_tbbc3_}\DecValTok{18}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\hypertarget{examine-the-normality-of-the-pca-scores}{%
+\section{examine the normality of the PCA
+scores}\label{examine-the-normality-of-the-pca-scores}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tbbc3_}\DecValTok{18}\NormalTok{_scores <-}\StringTok{ }\NormalTok{PCA_tbbc3_}\DecValTok{18}\OperatorTok{$}\NormalTok{scores[,}\DecValTok{1}\NormalTok{]}
+\KeywordTok{boxplot}\NormalTok{(est_tbbc3_}\DecValTok{18}\OperatorTok{$}\NormalTok{mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{boxplot}\NormalTok{(tbbc3_}\DecValTok{18}\NormalTok{_scores) }\CommentTok{# some outliers, but much better than the old one, and there are sone check lines }
+\KeywordTok{shapiro.test}\NormalTok{(est_tbbc3_}\DecValTok{18}\OperatorTok{$}\NormalTok{mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  est_tbbc3_18$mean
+## W = 0.94795, p-value = 0.001563
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{shapiro.test}\NormalTok{(tbbc3_}\DecValTok{18}\NormalTok{_scores) }\CommentTok{# not quite normal}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  tbbc3_18_scores
+## W = 0.94928, p-value = 0.001876
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggpubr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: ggplot2
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: magrittr
+\end{verbatim}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-5-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggqqplot}\NormalTok{(tbbc3_}\DecValTok{18}\NormalTok{_scores)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-5-3.pdf}
+
+\hypertarget{tbbc3-population-in-2019}{%
+\section{TBBC3 population in 2019}\label{tbbc3-population-in-2019}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_tbbc3_}\DecValTok{19}\NormalTok{ <-}\StringTok{ }\KeywordTok{princomp}\NormalTok{(est_tbbc3_}\DecValTok{19}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{7}\NormalTok{)], }\DataTypeTok{cor =}\NormalTok{ T, }\DataTypeTok{scores =}\NormalTok{ T)}
+\KeywordTok{summary}\NormalTok{(PCA_tbbc3_}\DecValTok{19}\NormalTok{) }\CommentTok{# 2PC needed}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Importance of components:
+##                           Comp.1    Comp.2    Comp.3     Comp.4
+## Standard deviation     1.3777306 1.0522000 0.9426800 0.32571142
+## Proportion of Variance 0.4745354 0.2767812 0.2221614 0.02652198
+## Cumulative Proportion  0.4745354 0.7513166 0.9734780 1.00000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{unclass}\NormalTok{(PCA_tbbc3_}\DecValTok{19}\OperatorTok{$}\NormalTok{loadings)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                Comp.1      Comp.2      Comp.3      Comp.4
+## inci_rate   0.6760937  0.20082431  0.20962372  0.67721838
+## mean        0.7056058 -0.02702519  0.03491572 -0.70722763
+## mummi_rate -0.0338013 -0.71219681  0.70060309  0.02807995
+## severity    0.2094638 -0.67209742 -0.68117112  0.20103696
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_tbbc3_}\DecValTok{19}\OperatorTok{$}\NormalTok{sdev }\OperatorTok{^}\DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Comp.1    Comp.2    Comp.3    Comp.4 
+## 1.8981415 1.1071249 0.8886457 0.1060879
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{biplot}\NormalTok{(PCA_tbbc3_}\DecValTok{19}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\hypertarget{tbbc3-population-2019-mummified-data-removed}{%
+\section{TBBC3 population 2019, mummified data
+removed}\label{tbbc3-population-2019-mummified-data-removed}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_tbbc3_}\FloatTok{19.1}\NormalTok{ <-}\StringTok{ }\KeywordTok{princomp}\NormalTok{(est_tbbc3_}\DecValTok{19}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{7}\NormalTok{)], }\DataTypeTok{cor =}\NormalTok{ T, }\DataTypeTok{scores =}\NormalTok{ T)}
+\KeywordTok{summary}\NormalTok{(PCA_tbbc3_}\FloatTok{19.1}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Importance of components:
+##                           Comp.1    Comp.2     Comp.3
+## Standard deviation     1.3773633 0.9980421 0.32677567
+## Proportion of Variance 0.6323766 0.3320293 0.03559411
+## Cumulative Proportion  0.6323766 0.9644059 1.00000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{unclass}\NormalTok{(PCA_tbbc3_}\FloatTok{19.1}\OperatorTok{$}\NormalTok{loadings)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Comp.1       Comp.2     Comp.3
+## inci_rate 0.6749597  0.295373611  0.6761537
+## mean      0.7063195  0.006391578 -0.7078644
+## severity  0.2134061 -0.955360444  0.2043141
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_tbbc3_}\FloatTok{19.1}\OperatorTok{$}\NormalTok{sdev }\OperatorTok{^}\DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Comp.1    Comp.2    Comp.3 
+## 1.8971297 0.9960880 0.1067823
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{biplot}\NormalTok{(PCA_tbbc3_}\FloatTok{19.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\hypertarget{tbbc3-populaiton-2018-2019-data-combined-mummified-removed}{%
+\section{TBBC3 populaiton 2018 2019 data combined (mummified
+removed)}\label{tbbc3-populaiton-2018-2019-data-combined-mummified-removed}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_tbbc3_}\DecValTok{1819}\NormalTok{ <-}\StringTok{ }\KeywordTok{princomp}\NormalTok{(}\KeywordTok{na.omit}\NormalTok{(est_tbbc3_}\DecValTok{1819}\NormalTok{[,}\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{6}\NormalTok{)]), }\DataTypeTok{cor =}\NormalTok{ T, }\DataTypeTok{scores =}\NormalTok{ T)}
+\KeywordTok{summary}\NormalTok{(PCA_tbbc3_}\DecValTok{1819}\NormalTok{) }\CommentTok{# almost 1 pc}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Importance of components:
+##                           Comp.1    Comp.2     Comp.3
+## Standard deviation     1.3813795 0.9930249 0.32510340
+## Proportion of Variance 0.6360698 0.3286995 0.03523074
+## Cumulative Proportion  0.6360698 0.9647693 1.00000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{unclass}\NormalTok{(PCA_tbbc3_}\DecValTok{1819}\OperatorTok{$}\NormalTok{loadings) }\CommentTok{# still, severity show somethig opposite}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Comp.1      Comp.2     Comp.3
+## mean      0.7042033  0.02224076  0.7096500
+## inci_rate 0.6727980  0.29838448 -0.6769856
+## severity  0.2268052 -0.95418659 -0.1951598
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{biplot}\NormalTok{(PCA_tbbc3_}\DecValTok{1819}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_tbbc3_}\DecValTok{1819}\OperatorTok{$}\NormalTok{scores[,}\DecValTok{1}\NormalTok{] ->}\StringTok{ }\NormalTok{tbbc3_}\DecValTok{1819}\NormalTok{_scores}
+\KeywordTok{boxplot}\NormalTok{(tbbc3_}\DecValTok{1819}\NormalTok{_scores)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-8-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{shapiro.test}\NormalTok{(tbbc3_}\DecValTok{1819}\NormalTok{_scores)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  tbbc3_1819_scores
+## W = 0.96885, p-value = 0.02537
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggqqplot}\NormalTok{(tbbc3_}\DecValTok{1819}\NormalTok{_scores)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-8-3.pdf}
+
+\hypertarget{tbbc3-populaiton-2018-2019-data-combined-mummified-kept-cannot-be-estimated.}{%
+\section{TBBC3 populaiton 2018 2019 data combined (mummified kept)
+cannot be
+estimated.}\label{tbbc3-populaiton-2018-2019-data-combined-mummified-kept-cannot-be-estimated.}}
+
+\hypertarget{z025-population-in-2019}{%
+\subsection{Z025 population in 2019}\label{z025-population-in-2019}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_z025_}\DecValTok{19}\NormalTok{ <-}\StringTok{ }\KeywordTok{princomp}\NormalTok{(est_z025_}\DecValTok{19}\NormalTok{[,}\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{8}\NormalTok{)], }\DataTypeTok{cor =}\NormalTok{ T, }\DataTypeTok{scores =}\NormalTok{ T)}
+\KeywordTok{summary}\NormalTok{(PCA_z025_}\DecValTok{19}\NormalTok{) }\CommentTok{# alomost need 2 pc, but one PC would be fine}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Importance of components:
+##                           Comp.1    Comp.2    Comp.3     Comp.4
+## Standard deviation     1.5505137 0.9162318 0.8316714 0.25445825
+## Proportion of Variance 0.6010232 0.2098702 0.1729193 0.01618725
+## Cumulative Proportion  0.6010232 0.8108934 0.9838127 1.00000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_z025_}\DecValTok{19}\OperatorTok{$}\NormalTok{loadings }\CommentTok{# mummirate and severity can see some opposite direction }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Loadings:
+##            Comp.1 Comp.2 Comp.3 Comp.4
+## inci_rate   0.560  0.492  0.150  0.650
+## mean        0.609  0.291        -0.737
+## mummi_rate  0.378 -0.656  0.653       
+## severity    0.415 -0.494 -0.741  0.187
+## 
+##                Comp.1 Comp.2 Comp.3 Comp.4
+## SS loadings      1.00   1.00   1.00   1.00
+## Proportion Var   0.25   0.25   0.25   0.25
+## Cumulative Var   0.25   0.50   0.75   1.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_z025_}\DecValTok{19}\OperatorTok{$}\NormalTok{sdev }\OperatorTok{^}\StringTok{ }\DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Comp.1    Comp.2    Comp.3    Comp.4 
+## 2.4040929 0.8394808 0.6916773 0.0647490
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{biplot}\NormalTok{(PCA_z025_}\DecValTok{19}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{z025_}\DecValTok{19}\NormalTok{_scores <-}\StringTok{ }\NormalTok{PCA_z025_}\DecValTok{19}\OperatorTok{$}\NormalTok{scores[,}\DecValTok{1}\NormalTok{]}
+\KeywordTok{boxplot}\NormalTok{(z025_}\DecValTok{19}\NormalTok{_scores) }\CommentTok{# looks nice}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-9-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{shapiro.test}\NormalTok{(z025_}\DecValTok{19}\NormalTok{_scores) }\CommentTok{# much better}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  z025_19_scores
+## W = 0.98331, p-value = 0.02263
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggqqplot}\NormalTok{(z025_}\DecValTok{19}\NormalTok{_scores) }\CommentTok{# nice}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-9-3.pdf}
+
+\hypertarget{z025-population-2019-dataset-without-mummified}{%
+\section{Z025 population 2019 dataset, without
+mummified}\label{z025-population-2019-dataset-without-mummified}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_z025_}\FloatTok{19.1}\NormalTok{ <-}\StringTok{ }\KeywordTok{princomp}\NormalTok{(est_z025_}\DecValTok{19}\NormalTok{[,}\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{8}\NormalTok{)], }\DataTypeTok{cor =}\NormalTok{ T, }\DataTypeTok{scores =}\NormalTok{ T)}
+\KeywordTok{summary}\NormalTok{(PCA_z025_}\FloatTok{19.1}\NormalTok{) }\CommentTok{# need 1 PC here}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Importance of components:
+##                          Comp.1    Comp.2     Comp.3
+## Standard deviation     1.473153 0.8745145 0.25504005
+## Proportion of Variance 0.723393 0.2549252 0.02168181
+## Cumulative Proportion  0.723393 0.9783182 1.00000000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{unclass}\NormalTok{(PCA_z025_}\FloatTok{19.1}\OperatorTok{$}\NormalTok{loadings)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Comp.1     Comp.2     Comp.3
+## inci_rate 0.6156361  0.4426308  0.6519741
+## mean      0.6597818  0.1628836 -0.7335918
+## severity  0.4309062 -0.8817862  0.1917627
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA_z025_}\FloatTok{19.1}\OperatorTok{$}\NormalTok{sdev }\OperatorTok{^}\StringTok{ }\DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Comp.1     Comp.2     Comp.3 
+## 2.17017896 0.76477561 0.06504543
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{biplot}\NormalTok{(PCA_z025_}\FloatTok{19.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# severity show sometthing opposite}
+
+\NormalTok{tbbc3_}\DecValTok{19}\NormalTok{_scores}\FloatTok{.1}\NormalTok{ <-}\StringTok{ }\NormalTok{PCA_z025_}\FloatTok{19.1}\OperatorTok{$}\NormalTok{scores[,}\DecValTok{1}\NormalTok{]}
+\KeywordTok{boxplot}\NormalTok{(tbbc3_}\DecValTok{19}\NormalTok{_scores}\FloatTok{.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-10-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{shapiro.test}\NormalTok{(tbbc3_}\DecValTok{19}\NormalTok{_scores}\FloatTok{.1}\NormalTok{) }\CommentTok{#almost normal}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  tbbc3_19_scores.1
+## W = 0.98585, p-value = 0.05222
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggqqplot}\NormalTok{(tbbc3_}\DecValTok{19}\NormalTok{_scores}\FloatTok{.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PCA_rawdata_files/figure-latex/unnamed-chunk-10-3.pdf}
+
+\hypertarget{get-the-scores-of-the-pca-analysis}{%
+\section{get the scores of the PCA
+analysis}\label{get-the-scores-of-the-pca-analysis}}
+
+\hypertarget{it-makes-sense-to-keep-the-mummified}{%
+\section{it makes sense to keep the
+mummified}\label{it-makes-sense-to-keep-the-mummified}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tbbc3_}\DecValTok{18}\NormalTok{_scores <-}\StringTok{ }\NormalTok{PCA_tbbc3_}\DecValTok{18}\OperatorTok{$}\NormalTok{scores}
+\NormalTok{tbbc3_}\DecValTok{19}\NormalTok{_scores <-}\StringTok{ }\NormalTok{PCA_tbbc3_}\DecValTok{19}\OperatorTok{$}\NormalTok{scores}
+\NormalTok{tbbc3_}\DecValTok{19}\NormalTok{_scores}\FloatTok{.1}\NormalTok{ <-}\StringTok{ }\NormalTok{PCA_tbbc3_}\FloatTok{19.1}\OperatorTok{$}\NormalTok{scores}
+\NormalTok{tbbc3_}\DecValTok{1819}\NormalTok{_scores <-}\StringTok{ }\NormalTok{PCA_tbbc3_}\DecValTok{1819}\OperatorTok{$}\NormalTok{scores}
+
+\NormalTok{z025_scores <-}\StringTok{ }\NormalTok{PCA_z025_}\DecValTok{19}\OperatorTok{$}\NormalTok{scores}
+\NormalTok{z025_scores}\FloatTok{.1}\NormalTok{ <-}\StringTok{ }\NormalTok{PCA_z025_}\FloatTok{19.1}\OperatorTok{$}\NormalTok{scores}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
